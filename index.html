@@ -7,571 +7,244 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #faf7f2;
-  --surface: #ffffff;
-  --surface2: #f4f0e8;
-  --border: #e2dbd0;
-  --border-light: #ede8df;
-  --accent: #1a1410;
-  --purple: #5c4ab0;
-  --purple-light: rgba(92,74,176,0.08);
-  --purple-border: rgba(92,74,176,0.2);
-  --green: #2e7d5e;
-  --green-light: rgba(46,125,94,0.08);
-  --green-border: rgba(46,125,94,0.2);
-  --amber: #b86c0a;
-  --amber-light: rgba(184,108,10,0.08);
-  --amber-border: rgba(184,108,10,0.2);
-  --danger: #c0392b;
-  --text: #1a1410;
-  --text-2: #4a3f32;
-  --text-muted: #9a8e7e;
-  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+  --bg:#faf7f2;--surface:#ffffff;--surface2:#f4f0e8;--border:#e2dbd0;--border-light:#ede8df;
+  --accent:#1a1410;--purple:#5c4ab0;--purple-light:rgba(92,74,176,0.08);--purple-border:rgba(92,74,176,0.2);
+  --green:#2e7d5e;--green-light:rgba(46,125,94,0.08);--green-border:rgba(46,125,94,0.2);
+  --amber:#b86c0a;--amber-light:rgba(184,108,10,0.08);--amber-border:rgba(184,108,10,0.2);
+  --danger:#c0392b;--text:#1a1410;--text-2:#4a3f32;--text-muted:#9a8e7e;
+  --shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 12px rgba(0,0,0,0.04);
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  min-height: 100vh;
-  overflow-x: hidden;
-  font-size: 14px;
-  line-height: 1.6;
-}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;font-size:14px;line-height:1.6;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(92,74,176,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(92,74,176,0.04) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;z-index:0;}
 
-/* Subtle grid bg */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(92,74,176,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(92,74,176,0.04) 1px, transparent 1px);
-  background-size: 52px 52px;
-  pointer-events: none;
-  z-index: 0;
-}
+/* GATE */
+#email-gate{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px;}
+#email-gate::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(92,74,176,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(92,74,176,0.04) 1px,transparent 1px);background-size:52px 52px;pointer-events:none;}
+.gate-card{background:var(--surface);border:1px solid var(--border);border-radius:2px;padding:40px 36px;width:100%;max-width:420px;box-shadow:var(--shadow);position:relative;z-index:1;}
+.gate-logo{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;letter-spacing:0.04em;color:var(--accent);margin-bottom:28px;}
+.gate-logo em{color:var(--purple);font-style:normal;}
+.gate-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:800;line-height:1.2;margin-bottom:8px;color:var(--text);}
+.gate-title em{font-style:italic;color:var(--purple);}
+.gate-desc{font-size:13px;color:var(--text-muted);line-height:1.7;margin-bottom:28px;}
+.gate-desc code{background:var(--surface2);border:1px solid var(--border);padding:1px 6px;border-radius:2px;font-size:12px;color:var(--text-2);font-family:monospace;}
+.gate-label{display:block;font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-2);margin-bottom:6px;}
+.gate-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:2px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:12px 14px;outline:none;transition:border-color 0.2s,box-shadow 0.2s;margin-bottom:8px;}
+.gate-input:focus{border-color:var(--purple);box-shadow:0 0 0 3px var(--purple-light);}
+.gate-err{font-size:12px;color:var(--danger);margin-bottom:12px;min-height:18px;display:none;}
+.gate-btn{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:14px 22px;border:none;border-radius:2px;cursor:pointer;background:var(--purple);color:#fff;width:100%;transition:all 0.2s;}
+.gate-btn:hover:not(:disabled){background:#4a3890;transform:translateY(-1px);box-shadow:0 4px 12px rgba(92,74,176,0.25);}
+.gate-btn:disabled{opacity:0.4;cursor:not-allowed;}
+.gate-note{font-size:11px;color:var(--text-muted);margin-top:16px;line-height:1.6;}
 
-/* ── NAV ─────────────────────────────── */
-nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(250,247,242,0.96);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
-}
-.nav-inner {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 0 24px;
-  display: flex;
-  align-items: center;
-  height: 60px;
-  gap: 0;
-}
-.nav-logo {
-  font-family: 'Playfair Display', serif;
-  font-size: 15px;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  color: var(--accent);
-  margin-right: 36px;
-  white-space: nowrap;
-  user-select: none;
-}
-.nav-logo em { color: var(--purple); font-style: normal; }
-.nav-tabs {
-  display: flex;
-  gap: 2px;
-  flex: 1;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.nav-tabs::-webkit-scrollbar { display: none; }
-.nav-tab {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  height: 60px;
-  padding: 0 18px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: var(--text-muted);
-  background: none;
-  border: none;
-  border-bottom: 2px solid transparent;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: color 0.2s, border-color 0.2s;
-}
-.nav-tab:hover { color: var(--text); }
-.nav-tab.active { color: var(--text); border-bottom-color: var(--purple); }
-.tab-pip {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--border);
-  flex-shrink: 0;
-  transition: background 0.2s;
-}
-.nav-tab.active .tab-pip { background: var(--purple); }
-.nav-tab.t-green.active { border-bottom-color: var(--green); }
-.nav-tab.t-green.active .tab-pip { background: var(--green); }
-.nav-tab.t-amber.active { border-bottom-color: var(--amber); }
-.nav-tab.t-amber.active .tab-pip { background: var(--amber); }
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(250,247,242,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 24px;display:flex;align-items:center;height:60px;gap:0;}
+.nav-logo{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;letter-spacing:0.04em;color:var(--accent);margin-right:36px;white-space:nowrap;user-select:none;}
+.nav-logo em{color:var(--purple);font-style:normal;}
+.nav-tabs{display:flex;gap:2px;flex:1;overflow-x:auto;scrollbar-width:none;}
+.nav-tabs::-webkit-scrollbar{display:none;}
+.nav-tab{display:flex;align-items:center;gap:8px;height:60px;padding:0 18px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;letter-spacing:0.02em;color:var(--text-muted);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:color 0.2s,border-color 0.2s;}
+.nav-tab:hover{color:var(--text);}
+.nav-tab.active{color:var(--text);border-bottom-color:var(--purple);}
+.tab-pip{width:6px;height:6px;border-radius:50%;background:var(--border);flex-shrink:0;transition:background 0.2s;}
+.nav-tab.active .tab-pip{background:var(--purple);}
+.nav-tab.t-green.active{border-bottom-color:var(--green);}
+.nav-tab.t-green.active .tab-pip{background:var(--green);}
+.nav-tab.t-amber.active{border-bottom-color:var(--amber);}
+.nav-tab.t-amber.active .tab-pip{background:var(--amber);}
+.nav-user{display:flex;align-items:center;gap:10px;margin-left:auto;flex-shrink:0;}
+.nav-user-email{font-size:11px;color:var(--text-muted);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.nav-logout-btn{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.04em;padding:5px 12px;border:1px solid var(--border);border-radius:2px;background:transparent;color:var(--text-muted);cursor:pointer;transition:all 0.15s;white-space:nowrap;}
+.nav-logout-btn:hover{border-color:var(--danger);color:var(--danger);}
 
-/* ── PAGES ───────────────────────────── */
-.page { display: none; position: relative; z-index: 1; }
-.page.active { display: block; animation: pageIn 0.3s ease; }
-@keyframes pageIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+/* PAGES */
+.page{display:none;position:relative;z-index:1;}
+.page.active{display:block;animation:pageIn 0.3s ease;}
+@keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.container{max-width:760px;margin:0 auto;padding:44px 24px 96px;}
 
-.container {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 44px 24px 96px;
-}
+/* PAGE HEADER */
+.page-header{margin-bottom:40px;padding-bottom:28px;border-bottom:1px solid var(--border-light);}
+.page-eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;color:var(--text-muted);}
+.eyebrow-dot{width:5px;height:5px;border-radius:50%;}
+.page-title{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,38px);font-weight:800;line-height:1.15;letter-spacing:-0.02em;margin-bottom:10px;color:var(--text);}
+.page-title .hl{font-style:italic;}
+.page-desc{font-size:13px;color:var(--text-muted);line-height:1.75;max-width:540px;}
 
-/* ── PAGE HEADER ─────────────────────── */
-.page-header {
-  margin-bottom: 40px;
-  padding-bottom: 28px;
-  border-bottom: 1px solid var(--border-light);
-}
-.page-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin-bottom: 14px;
-  color: var(--text-muted);
-}
-.eyebrow-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-}
-.page-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(26px, 4vw, 38px);
-  font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  margin-bottom: 10px;
-  color: var(--text);
-}
-.page-title .hl { font-style: italic; }
-.page-desc {
-  font-size: 13px;
-  color: var(--text-muted);
-  line-height: 1.75;
-  max-width: 540px;
-}
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:2px;padding:28px;margin-bottom:16px;box-shadow:var(--shadow);position:relative;}
+.card-label{font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+.card-label::after{content:'';flex:1;height:1px;background:var(--border-light);}
 
-/* ── CARDS ───────────────────────────── */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  padding: 28px;
-  margin-bottom: 16px;
-  box-shadow: var(--shadow);
-  position: relative;
-}
-.card-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.card-label::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border-light);
-}
+/* HISTORY */
+.hist-item{border:1px solid var(--border-light);border-radius:2px;margin-bottom:8px;overflow:hidden;}
+.hist-item-header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;cursor:pointer;background:var(--surface2);transition:background 0.15s;gap:12px;}
+.hist-item-header:hover{background:var(--border-light);}
+.hist-item-title{font-size:13px;font-weight:500;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hist-item-meta{font-size:11px;color:var(--text-muted);margin-top:2px;}
+.hist-custom-badge{font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;background:var(--amber-light);color:var(--amber);border:1px solid var(--amber-border);padding:2px 7px;border-radius:2px;white-space:nowrap;flex-shrink:0;}
+.hist-item-body{padding:16px;border-top:1px solid var(--border-light);display:none;}
+.hist-item-body.open{display:block;}
+.hist-mini-chat{max-height:200px;overflow-y:auto;margin-bottom:12px;display:flex;flex-direction:column;gap:8px;}
+.hist-mini-msg{font-size:12px;line-height:1.6;padding:8px 12px;border-radius:2px;max-width:85%;}
+.hist-mini-msg.ai{background:var(--surface2);border:1px solid var(--border);align-self:flex-start;}
+.hist-mini-msg.user{background:var(--purple-light);border:1px solid var(--purple-border);align-self:flex-end;}
+.hist-feedback-box{background:var(--surface2);border:1px solid var(--border);border-radius:2px;padding:12px 14px;font-size:12px;line-height:1.75;color:var(--text-2);white-space:pre-wrap;}
+.hist-empty{font-size:13px;color:var(--text-muted);text-align:center;padding:32px 0;}
 
-/* ── FORM ELEMENTS ───────────────────── */
-.field { margin-bottom: 16px; }
-.field:last-child { margin-bottom: 0; }
-.field-label {
-  display: block;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--text-2);
-  margin-bottom: 6px;
-}
-input[type=text], input[type=date], select, textarea {
-  width: 100%;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  padding: 10px 14px;
-  outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  -webkit-appearance: none;
-}
-input[type=text]:focus, select:focus, textarea:focus {
-  border-color: var(--purple);
-  box-shadow: 0 0 0 3px var(--purple-light);
-}
-input[type=text]::placeholder, textarea::placeholder { color: var(--text-muted); }
-textarea { resize: vertical; min-height: 140px; line-height: 1.75; }
-select { cursor: pointer; }
-.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+/* FORM */
+.field{margin-bottom:16px;}
+.field:last-child{margin-bottom:0;}
+.field-label{display:block;font-size:11px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-2);margin-bottom:6px;}
+input[type=text],input[type=date],select,textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:2px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:10px 14px;outline:none;transition:border-color 0.2s,box-shadow 0.2s;-webkit-appearance:none;}
+input[type=text]:focus,select:focus,textarea:focus{border-color:var(--purple);box-shadow:0 0 0 3px var(--purple-light);}
+input[type=text]::placeholder,textarea::placeholder{color:var(--text-muted);}
+textarea{resize:vertical;min-height:140px;line-height:1.75;}
+select{cursor:pointer;}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 
-/* ── BUTTONS ─────────────────────────── */
-.btn {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 12px 22px;
-  border: none;
-  border-radius: 2px;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.btn-primary {
-  background: var(--accent);
-  color: var(--bg);
-  width: 100%;
-  justify-content: center;
-  margin-top: 20px;
-  padding: 14px 22px;
-}
-.btn-primary:hover:not(:disabled) { background: #2e2318; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-.btn-primary.p { background: var(--purple); }
-.btn-primary.p:hover:not(:disabled) { background: #4a3890; }
-.btn-primary.g { background: var(--green); }
-.btn-primary.g:hover:not(:disabled) { background: #245e48; }
-.btn-primary.a { background: var(--amber); }
-.btn-primary.a:hover:not(:disabled) { background: #955708; }
-.btn-secondary {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-  width: 100%;
-  justify-content: center;
-  margin-top: 10px;
-}
-.btn-secondary:hover { border-color: var(--text-2); color: var(--text); }
-.btn.loading .default-text { display: none; }
-.btn.loading .loading-text { display: inline-flex; align-items: center; gap: 6px; }
-.loading-text { display: none; }
-.spinner { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
-.spinner.dark { border-color: rgba(0,0,0,0.15); border-top-color: var(--text-2); }
-@keyframes spin { to { transform: rotate(360deg); } }
+/* BUTTONS */
+.btn{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:12px 22px;border:none;border-radius:2px;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px;}
+.btn:disabled{opacity:0.4;cursor:not-allowed;}
+.btn-primary{background:var(--accent);color:var(--bg);width:100%;justify-content:center;margin-top:20px;padding:14px 22px;}
+.btn-primary:hover:not(:disabled){background:#2e2318;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.15);}
+.btn-primary.p{background:var(--purple);}
+.btn-primary.p:hover:not(:disabled){background:#4a3890;}
+.btn-primary.g{background:var(--green);}
+.btn-primary.g:hover:not(:disabled){background:#245e48;}
+.btn-primary.a{background:var(--amber);}
+.btn-primary.a:hover:not(:disabled){background:#955708;}
+.btn-secondary{background:transparent;border:1px solid var(--border);color:var(--text-muted);width:100%;justify-content:center;margin-top:10px;}
+.btn-secondary:hover{border-color:var(--text-2);color:var(--text);}
+.btn.loading .default-text{display:none;}
+.btn.loading .loading-text{display:inline-flex;align-items:center;gap:6px;}
+.loading-text{display:none;}
+.spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-/* ── ERROR / STATUS ──────────────────── */
-.err-msg {
-  background: rgba(192,57,43,0.06);
-  border: 1px solid rgba(192,57,43,0.2);
-  color: var(--danger);
-  padding: 10px 14px;
-  font-size: 12px;
-  border-radius: 2px;
-  display: none;
-  margin-top: 12px;
-}
-.result-area { display: none; animation: fadeUp 0.4s ease; }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+/* STATUS */
+.err-msg{background:rgba(192,57,43,0.06);border:1px solid rgba(192,57,43,0.2);color:var(--danger);padding:10px 14px;font-size:12px;border-radius:2px;display:none;margin-top:12px;}
+.result-area{display:none;animation:fadeUp 0.4s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── SCENARIO PICKER ─────────────────── */
-.scenario-group-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin: 20px 0 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.scenario-group-label::before { content: ''; width: 16px; height: 1px; background: var(--border); }
-.scenario-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 6px; }
-.scenario-btn {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  color: var(--text-2);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  line-height: 1.5;
-  padding: 12px 14px;
-  cursor: pointer;
-  text-align: left;
-  transition: all 0.15s;
-}
-.scenario-btn:hover { border-color: var(--purple); color: var(--purple); background: var(--purple-light); }
-.scenario-btn.active { border-color: var(--purple); background: var(--purple-light); color: var(--purple); font-weight: 500; }
-.scenario-icon { display: block; font-size: 18px; margin-bottom: 6px; }
-.scenario-text { display: block; }
+/* SCENARIO */
+.scenario-group-label{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin:20px 0 10px;display:flex;align-items:center;gap:8px;}
+.scenario-group-label::before{content:'';width:16px;height:1px;background:var(--border);}
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;}
+.scenario-btn{background:var(--surface2);border:1px solid var(--border);border-radius:2px;color:var(--text-2);font-family:'DM Sans',sans-serif;font-size:12px;line-height:1.5;padding:12px 14px;cursor:pointer;text-align:left;transition:all 0.15s;}
+.scenario-btn:hover{border-color:var(--purple);color:var(--purple);background:var(--purple-light);}
+.scenario-btn.active{border-color:var(--purple);background:var(--purple-light);color:var(--purple);font-weight:500;}
+.scenario-icon{display:block;font-size:18px;margin-bottom:6px;}
+.scenario-text{display:block;}
 
-/* ── CHAT UI ─────────────────────────── */
-.chat-box {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  padding: 16px;
-  min-height: 220px;
-  max-height: 420px;
-  overflow-y: auto;
-  margin-bottom: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  scroll-behavior: smooth;
-}
-.chat-msg {
-  max-width: 86%;
-  padding: 10px 14px;
-  border-radius: 2px;
-  font-size: 13px;
-  line-height: 1.65;
-  position: relative;
-}
-.chat-msg.ai {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  align-self: flex-start;
-}
-.chat-msg.user {
-  align-self: flex-end;
-}
-.chat-msg.rp-user { background: var(--purple-light); border: 1px solid var(--purple-border); }
-.chat-msg.sop-user { background: var(--green-light); border: 1px solid var(--green-border); }
-.chat-msg.ob-user { background: var(--amber-light); border: 1px solid var(--amber-border); }
-.msg-label {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 5px;
-}
-.chat-input-row {
-  display: flex;
-  gap: 10px;
-  align-items: stretch;
-}
-.chat-input-row input { flex: 1; margin: 0; }
-.send-btn {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 2px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.2s;
-  color: #fff;
-  flex-shrink: 0;
-}
-.send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.send-btn.p { background: var(--purple); }
-.send-btn.p:hover:not(:disabled) { background: #4a3890; }
-.send-btn.g { background: var(--green); }
-.send-btn.g:hover:not(:disabled) { background: #245e48; }
-.send-btn.a { background: var(--amber); }
-.send-btn.a:hover:not(:disabled) { background: #955708; }
-.typing-indicator {
-  display: none;
-  font-size: 11px;
-  color: var(--text-muted);
-  padding: 4px 2px;
-  gap: 6px;
-  align-items: center;
-}
-.typing-dots span {
-  display: inline-block;
-  width: 5px; height: 5px;
-  background: var(--text-muted);
-  border-radius: 50%;
-  animation: blink 1.2s infinite;
-}
-.typing-dots span:nth-child(2) { animation-delay: 0.2s; }
-.typing-dots span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes blink { 0%, 80%, 100% { opacity: 0.25; } 40% { opacity: 1; } }
+/* CHAT */
+.chat-box{background:var(--surface2);border:1px solid var(--border);border-radius:2px;padding:16px;min-height:220px;max-height:420px;overflow-y:auto;margin-bottom:12px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth;}
+.chat-msg{max-width:86%;padding:10px 14px;border-radius:2px;font-size:13px;line-height:1.65;}
+.chat-msg.ai{background:var(--surface);border:1px solid var(--border);align-self:flex-start;}
+.chat-msg.user{align-self:flex-end;}
+.chat-msg.rp-user{background:var(--purple-light);border:1px solid var(--purple-border);}
+.chat-msg.sop-user{background:var(--green-light);border:1px solid var(--green-border);}
+.chat-msg.ob-user{background:var(--amber-light);border:1px solid var(--amber-border);}
+.msg-label{font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:5px;}
+.chat-input-row{display:flex;gap:10px;align-items:stretch;}
+.chat-input-row input{flex:1;margin:0;}
+.send-btn{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.05em;padding:10px 20px;border:none;border-radius:2px;cursor:pointer;white-space:nowrap;transition:all 0.2s;color:#fff;flex-shrink:0;}
+.send-btn:disabled{opacity:0.4;cursor:not-allowed;}
+.send-btn.p{background:var(--purple);}
+.send-btn.p:hover:not(:disabled){background:#4a3890;}
+.send-btn.g{background:var(--green);}
+.send-btn.g:hover:not(:disabled){background:#245e48;}
+.send-btn.a{background:var(--amber);}
+.send-btn.a:hover:not(:disabled){background:#955708;}
+.typing-indicator{display:none;font-size:11px;color:var(--text-muted);padding:4px 2px;gap:6px;align-items:center;}
+.typing-dots span{display:inline-block;width:5px;height:5px;background:var(--text-muted);border-radius:50%;animation:blink 1.2s infinite;}
+.typing-dots span:nth-child(2){animation-delay:0.2s;}
+.typing-dots span:nth-child(3){animation-delay:0.4s;}
+@keyframes blink{0%,80%,100%{opacity:0.25}40%{opacity:1}}
 
-/* ── QUICK BTNS ──────────────────────── */
-.quick-btns { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-.quick-btn {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  color: var(--text-2);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 11px;
-  padding: 5px 11px;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.quick-btn:hover { border-color: var(--green); color: var(--green); }
+/* QUICK BTNS */
+.quick-btns{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.quick-btn{background:var(--surface2);border:1px solid var(--border);border-radius:2px;color:var(--text-2);font-family:'DM Sans',sans-serif;font-size:11px;padding:5px 11px;cursor:pointer;transition:all 0.15s;}
+.quick-btn:hover{border-color:var(--green);color:var(--green);}
 
-/* ── ONBOARDING STEPS ────────────────── */
-.ob-step {
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  padding: 20px 22px;
-  margin-bottom: 10px;
-  background: var(--surface);
-  display: grid;
-  grid-template-columns: 44px 1fr;
-  gap: 16px;
-  align-items: start;
-}
-.ob-step-num {
-  font-family: 'Playfair Display', serif;
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--amber);
-  line-height: 1;
-  padding-top: 2px;
-}
-.ob-step-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 14px;
-  font-weight: 700;
-  margin-bottom: 7px;
-  color: var(--text);
-}
-.ob-step-body {
-  font-size: 13px;
-  line-height: 1.75;
-  color: var(--text-2);
-}
+/* ONBOARDING */
+.ob-step{border:1px solid var(--border);border-radius:2px;padding:20px 22px;margin-bottom:10px;background:var(--surface);display:grid;grid-template-columns:44px 1fr;gap:16px;align-items:start;}
+.ob-step-num{font-family:'Playfair Display',serif;font-size:22px;font-weight:800;color:var(--amber);line-height:1;padding-top:2px;}
+.ob-step-title{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;margin-bottom:7px;color:var(--text);}
+.ob-step-body{font-size:13px;line-height:1.75;color:var(--text-2);}
+.result-text{font-size:13px;line-height:1.85;color:var(--text-2);white-space:pre-wrap;}
+.btn-row{display:flex;gap:10px;margin-top:10px;}
+.btn-row .btn-secondary{margin-top:0;}
 
-/* ── RP FEEDBACK ─────────────────────── */
-.result-text {
-  font-size: 13px;
-  line-height: 1.85;
-  color: var(--text-2);
-  white-space: pre-wrap;
-}
-
-/* ── DIVIDERS ────────────────────────── */
-.btn-row {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-.btn-row .btn-secondary { margin-top: 0; }
-
-@media (max-width: 620px) {
-  .row2, .row3, .scenario-grid { grid-template-columns: 1fr; }
-  .container { padding: 28px 16px 80px; }
-  .card { padding: 20px; }
+@media(max-width:620px){
+  .row2,.scenario-grid{grid-template-columns:1fr;}
+  .container{padding:28px 16px 80px;}
+  .card{padding:20px;}
+  .nav-user-email{display:none;}
 }
 </style>
 </head>
 <body>
 
+<!-- EMAIL GATE -->
+<div id="email-gate">
+  <div class="gate-card">
+    <div class="gate-logo">CS<em>AI</em></div>
+    <h1 class="gate-title">Selamat<br><em>Datang</em></h1>
+    <p class="gate-desc">Tools ini khusus untuk tim CS Reku. Masukkan email Reku lo — hanya akun <code>@reku.id</code> yang bisa akses.</p>
+    <label class="gate-label">Email Reku</label>
+    <input class="gate-input" type="email" id="gate-email" placeholder="nama@reku.id" autocomplete="email">
+    <div class="gate-err" id="gate-err"></div>
+    <button class="gate-btn" id="gate-btn" onclick="doLogin()">Masuk ke Platform</button>
+    <p class="gate-note">🔒 History roleplay tersimpan khusus per akun — tidak bisa dilihat akun lain.</p>
+  </div>
+</div>
+
 <nav>
   <div class="nav-inner">
     <div class="nav-logo">CS<em>AI</em></div>
     <div class="nav-tabs">
-      <button class="nav-tab t-purple active" onclick="switchTab('roleplay', this)">
-        <span class="tab-pip"></span> Role Play
-      </button>
-      <button class="nav-tab t-green" onclick="switchTab('sop', this)">
-        <span class="tab-pip"></span> SOP Chatbot
-      </button>
-      <button class="nav-tab t-amber" onclick="switchTab('onboarding', this)">
-        <span class="tab-pip"></span> Onboarding
-      </button>
+      <button class="nav-tab t-purple active" onclick="switchTab('roleplay',this)"><span class="tab-pip"></span> Role Play</button>
+      <button class="nav-tab t-green" onclick="switchTab('sop',this)"><span class="tab-pip"></span> SOP Chatbot</button>
+      <button class="nav-tab t-amber" onclick="switchTab('onboarding',this)"><span class="tab-pip"></span> Onboarding</button>
+    </div>
+    <div class="nav-user">
+      <span class="nav-user-email" id="nav-email-display"></span>
+      <button class="nav-logout-btn" onclick="doLogout()">Keluar</button>
     </div>
   </div>
 </nav>
 
-<!-- ═══════════════════════════════════════
-     PAGE: ROLE PLAY
-═══════════════════════════════════════ -->
+<!-- ROLE PLAY -->
 <div class="page active" id="page-roleplay">
 <div class="container">
-
   <div class="page-header">
-    <div class="page-eyebrow">
-      <span class="eyebrow-dot" style="background:var(--purple)"></span>
-      AI Role Play Simulator
-    </div>
+    <div class="page-eyebrow"><span class="eyebrow-dot" style="background:var(--purple)"></span>AI Role Play Simulator</div>
     <h1 class="page-title">Latihan Handle<br><em class="hl">Chat Sulit</em></h1>
     <p class="page-desc">Pilih skenario member — AI berperan sebagai member dengan karakter berbeda. Latih respons lo sampai natural dan sesuai SOP.</p>
   </div>
 
-  <!-- Setup card -->
   <div class="card" id="rp-setup-card">
     <div class="card-label">Pilih Skenario</div>
-
     <div class="scenario-group-label">😤 Komplain &amp; Marah</div>
     <div class="scenario-grid">
-      <button class="scenario-btn" data-scenario="withdraw_angry" onclick="selectScenario(this)">
-        <span class="scenario-icon">💰</span>
-        <span class="scenario-text">Withdraw 3 hari belum masuk — member ngamuk &amp; maki-maki</span>
-      </button>
-      <button class="scenario-btn" data-scenario="kyc_angry" onclick="selectScenario(this)">
-        <span class="scenario-icon">🪪</span>
-        <span class="scenario-text">KYC ditolak berkali-kali — member marah &amp; ancam lapor OJK</span>
-      </button>
-      <button class="scenario-btn" data-scenario="app_angry" onclick="selectScenario(this)">
-        <span class="scenario-icon">📱</span>
-        <span class="scenario-text">Nggak bisa login saat trading — member panik &amp; kasar</span>
-      </button>
-      <button class="scenario-btn" data-scenario="wrong_transfer_angry" onclick="selectScenario(this)">
-        <span class="scenario-icon">❗</span>
-        <span class="scenario-text">Klaim salah transfer — member teriak minta refund sekarang</span>
-      </button>
+      <button class="scenario-btn" data-scenario="withdraw_angry" onclick="selectScenario(this)"><span class="scenario-icon">💰</span><span class="scenario-text">Withdraw 3 hari belum masuk — member ngamuk &amp; maki-maki</span></button>
+      <button class="scenario-btn" data-scenario="kyc_angry" onclick="selectScenario(this)"><span class="scenario-icon">🪪</span><span class="scenario-text">KYC ditolak berkali-kali — member marah &amp; ancam lapor OJK</span></button>
+      <button class="scenario-btn" data-scenario="app_angry" onclick="selectScenario(this)"><span class="scenario-icon">📱</span><span class="scenario-text">Nggak bisa login saat trading — member panik &amp; kasar</span></button>
+      <button class="scenario-btn" data-scenario="wrong_transfer_angry" onclick="selectScenario(this)"><span class="scenario-icon">❗</span><span class="scenario-text">Klaim salah transfer — member teriak minta refund sekarang</span></button>
     </div>
-
     <div class="scenario-group-label">🙂 Komplain Biasa</div>
     <div class="scenario-grid">
-      <button class="scenario-btn" data-scenario="withdraw_calm" onclick="selectScenario(this)">
-        <span class="scenario-icon">💸</span>
-        <span class="scenario-text">Withdraw belum masuk — member tanya dengan sopan</span>
-      </button>
-      <button class="scenario-btn" data-scenario="fee_calm" onclick="selectScenario(this)">
-        <span class="scenario-icon">🧾</span>
-        <span class="scenario-text">Bingung soal biaya transaksi — minta penjelasan</span>
-      </button>
-      <button class="scenario-btn" data-scenario="kyc_calm" onclick="selectScenario(this)">
-        <span class="scenario-icon">🪪</span>
-        <span class="scenario-text">KYC ditolak — member minta tolong dicek dengan baik-baik</span>
-      </button>
-      <button class="scenario-btn" data-scenario="product_question" onclick="selectScenario(this)">
-        <span class="scenario-icon">📊</span>
-        <span class="scenario-text">Tanya perbedaan produk Crypto vs US Stock</span>
-      </button>
+      <button class="scenario-btn" data-scenario="withdraw_calm" onclick="selectScenario(this)"><span class="scenario-icon">💸</span><span class="scenario-text">Withdraw belum masuk — member tanya dengan sopan</span></button>
+      <button class="scenario-btn" data-scenario="fee_calm" onclick="selectScenario(this)"><span class="scenario-icon">🧾</span><span class="scenario-text">Bingung soal biaya transaksi — minta penjelasan</span></button>
+      <button class="scenario-btn" data-scenario="kyc_calm" onclick="selectScenario(this)"><span class="scenario-icon">🪪</span><span class="scenario-text">KYC ditolak — member minta tolong dicek dengan baik-baik</span></button>
+      <button class="scenario-btn" data-scenario="product_question" onclick="selectScenario(this)"><span class="scenario-icon">📊</span><span class="scenario-text">Tanya perbedaan produk Crypto vs US Stock</span></button>
     </div>
-
-    <div class="field" style="margin-top: 20px;">
+    <div class="field" style="margin-top:20px">
       <label class="field-label">Atau buat skenario sendiri</label>
       <input type="text" id="rp-custom" placeholder="Deskripsikan skenario member yang ingin disimulasikan...">
     </div>
-
     <button class="btn btn-primary p" id="rp-start-btn" onclick="startRoleplay()" disabled>
       <span class="default-text">▶ Mulai Simulasi</span>
       <span class="loading-text"><span class="spinner"></span> Menyiapkan skenario...</span>
@@ -579,9 +252,8 @@ select { cursor: pointer; }
     <div class="err-msg" id="rp-err"></div>
   </div>
 
-  <!-- Chat area -->
   <div id="rp-chat-area" style="display:none">
-    <div class="card" style="padding: 20px;">
+    <div class="card" style="padding:20px">
       <div class="card-label" id="rp-scenario-label">Simulasi Aktif</div>
       <div class="chat-box" id="rp-chat-box"></div>
       <div class="typing-indicator" id="rp-typing">
@@ -597,42 +269,45 @@ select { cursor: pointer; }
         <button class="btn btn-secondary" style="margin-top:0;flex:1" onclick="resetRoleplay()">↩ Skenario Baru</button>
       </div>
     </div>
-
     <div class="card" id="rp-feedback-card" style="display:none">
       <div class="card-label">Evaluasi Performa</div>
       <div class="result-text" id="rp-feedback-text">—</div>
     </div>
   </div>
 
+  <!-- History -->
+  <div class="card" id="rp-history-card" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <span style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted)">Riwayat Sesi Gue</span>
+      <button class="btn-secondary" style="width:auto;margin-top:0;padding:5px 12px;font-size:11px" onclick="document.getElementById('rp-history-card').style.display='none'">Tutup</button>
+    </div>
+    <div id="rp-history-list"></div>
+  </div>
+
+  <div style="text-align:center;margin-top:8px">
+    <button class="btn btn-secondary" style="width:auto;margin-top:0;font-size:11px" onclick="showHistory()">📋 Lihat Riwayat Sesi Gue</button>
+  </div>
 </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     PAGE: SOP CHATBOT
-═══════════════════════════════════════ -->
+<!-- SOP CHATBOT -->
 <div class="page" id="page-sop">
 <div class="container">
-
   <div class="page-header">
-    <div class="page-eyebrow">
-      <span class="eyebrow-dot" style="background:var(--green)"></span>
-      AI SOP Chatbot
-    </div>
+    <div class="page-eyebrow"><span class="eyebrow-dot" style="background:var(--green)"></span>AI SOP Chatbot</div>
     <h1 class="page-title">Tanya <em class="hl">Prosedur</em><br>Langsung ke AI</h1>
     <p class="page-desc">Butuh jawaban cepat soal SOP? Tanya di sini. Bisa upload konteks SOP internal atau langsung tanya tanpa konteks.</p>
   </div>
-
   <div class="card">
     <div class="card-label">Konteks SOP (opsional)</div>
     <div class="field">
-      <textarea id="sop-context" style="min-height: 100px" placeholder="Paste isi SOP atau kebijakan internal di sini (opsional).&#10;&#10;Kalau dikosongkan, AI akan menjawab berdasarkan pengetahuan umum CS platform crypto/investasi Indonesia."></textarea>
+      <textarea id="sop-context" style="min-height:100px" placeholder="Paste isi SOP atau kebijakan internal di sini (opsional).&#10;&#10;Kalau dikosongkan, AI akan menjawab berdasarkan pengetahuan umum CS platform crypto/investasi Indonesia."></textarea>
     </div>
     <button class="btn btn-primary g" onclick="initSOP()">
       <span class="default-text">✓ Set Konteks &amp; Mulai Chat</span>
       <span class="loading-text"><span class="spinner"></span> Menyiapkan...</span>
     </button>
   </div>
-
   <div class="card" id="sop-chat-card">
     <div class="card-label">Tanya SOP</div>
     <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px">Pertanyaan cepat:</p>
@@ -644,35 +319,24 @@ select { cursor: pointer; }
       <button class="quick-btn" onclick="sopQuickAsk(this)">Cara handle member marah?</button>
     </div>
     <div class="chat-box" id="sop-chat-box">
-      <div class="chat-msg ai">
-        <div class="msg-label">SOP AI</div>
-        Halo! Gue siap bantu jawab pertanyaan soal SOP dan prosedur. Tanya aja langsung ya 👋
-      </div>
+      <div class="chat-msg ai"><div class="msg-label">SOP AI</div>Halo! Gue siap bantu jawab pertanyaan soal SOP dan prosedur. Tanya aja langsung ya 👋</div>
     </div>
     <div class="chat-input-row">
       <input type="text" id="sop-input" placeholder="Tanya prosedur atau kebijakan..." onkeydown="if(event.key==='Enter')sendSOPMsg()">
       <button class="send-btn g" id="sop-send-btn" onclick="sendSOPMsg()">Tanya</button>
     </div>
   </div>
-
 </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     PAGE: ONBOARDING
-═══════════════════════════════════════ -->
+<!-- ONBOARDING -->
 <div class="page" id="page-onboarding">
 <div class="container">
-
   <div class="page-header">
-    <div class="page-eyebrow">
-      <span class="eyebrow-dot" style="background:var(--amber)"></span>
-      AI Onboarding Buddy
-    </div>
+    <div class="page-eyebrow"><span class="eyebrow-dot" style="background:var(--amber)"></span>AI Onboarding Buddy</div>
     <h1 class="page-title">Panduan Belajar<br>untuk <em class="hl">Agent Baru</em></h1>
     <p class="page-desc">Belajar step-by-step dengan panduan AI yang personal. Pilih hari onboarding dan fokus pembelajaran — materi langsung disiapkan.</p>
   </div>
-
   <div class="card" id="ob-setup-card">
     <div class="card-label">Data Agent Baru</div>
     <div class="row2">
@@ -708,7 +372,6 @@ select { cursor: pointer; }
     </button>
     <div class="err-msg" id="ob-err"></div>
   </div>
-
   <div class="result-area" id="ob-session">
     <div class="card">
       <div class="card-label" id="ob-session-label">Materi Sesi</div>
@@ -718,10 +381,7 @@ select { cursor: pointer; }
       <div class="card-label">Tanya Jawab</div>
       <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px">Ada yang kurang jelas dari materi di atas? Tanya di sini.</p>
       <div class="chat-box" id="ob-chat-box">
-        <div class="chat-msg ai">
-          <div class="msg-label">Onboarding AI</div>
-          Hai! Gue Onboarding Buddy lo. Kalau ada yang mau ditanya soal materi di atas, tanya aja ya 😊
-        </div>
+        <div class="chat-msg ai"><div class="msg-label">Onboarding AI</div>Hai! Gue Onboarding Buddy lo. Kalau ada yang mau ditanya soal materi di atas, tanya aja ya 😊</div>
       </div>
       <div class="chat-input-row">
         <input type="text" id="ob-input" placeholder="Tanya tentang materi onboarding..." onkeydown="if(event.key==='Enter')sendOBMsg()">
@@ -730,7 +390,6 @@ select { cursor: pointer; }
     </div>
     <button class="btn btn-secondary" onclick="resetOnboarding()">↩ Sesi Baru</button>
   </div>
-
 </div>
 </div>
 
@@ -742,45 +401,15 @@ function switchTab(id, el) {
   document.getElementById('page-' + id).classList.add('active');
   el.classList.add('active');
 }
-
-// ── API KEY MANAGEMENT ─────────────────────────────────────────────
-const GROQ_API_KEY = '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';
-function getApiKey() { return GROQ_API_KEY; }
-function showApiKeyModal() {} // disabled
-
-async function callAI(prompt, maxTokens = 900) {
-  const apiKey = getApiKey();
-  const r = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${apiKey}`
-    },
-    body: JSON.stringify({
-      model: "llama-3.3-70b-versatile",
-      max_tokens: maxTokens,
-      messages: [{ role: "user", content: prompt }]
-    })
-  });
-  if (!r.ok) {
-    if (r.status === 401) {
-      localStorage.removeItem('groq_api_key');
-      throw new Error('API key tidak valid. Coba masukkan ulang.');
-    }
-    throw new Error(`API error ${r.status}`);
-  }
-  const d = await r.json();
-  if (!d.choices?.length) throw new Error('Empty response');
-  return d.choices[0].message.content || "";
+function escapeHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
-
 function setLoading(id, on) {
   const b = document.getElementById(id);
   if (!b) return;
   b.classList.toggle('loading', on);
   b.disabled = on;
 }
-
 function showErr(id, msg) {
   const el = document.getElementById(id);
   el.textContent = '⚠ ' + msg;
@@ -791,22 +420,128 @@ function hideErr(id) {
   if (el) el.style.display = 'none';
 }
 
-function escapeHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+// ── EMAIL GATE ─────────────────────────────────────────────────────
+let currentEmail = '';
+
+// Key unik per email — data tiap akun 100% terpisah
+function histKey(email) {
+  return 'csai_hist__' + email.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+}
+
+function doLogin() {
+  const email = document.getElementById('gate-email').value.trim().toLowerCase();
+  const errEl = document.getElementById('gate-err');
+  errEl.style.display = 'none';
+  if (!email) { errEl.textContent = '⚠ Email tidak boleh kosong.'; errEl.style.display = 'block'; return; }
+  if (!email.endsWith('@reku.id')) { errEl.textContent = '⚠ Hanya email @reku.id yang bisa mengakses tools ini.'; errEl.style.display = 'block'; return; }
+  const btn = document.getElementById('gate-btn');
+  btn.disabled = true; btn.textContent = 'Memverifikasi...';
+  setTimeout(() => {
+    currentEmail = email;
+    document.getElementById('nav-email-display').textContent = email;
+    document.getElementById('email-gate').style.display = 'none';
+    btn.disabled = false; btn.textContent = 'Masuk ke Platform';
+  }, 500);
+}
+
+function doLogout() {
+  currentEmail = '';
+  document.getElementById('gate-email').value = '';
+  document.getElementById('gate-err').style.display = 'none';
+  document.getElementById('email-gate').style.display = 'flex';
+  document.getElementById('rp-history-card').style.display = 'none';
+  resetRoleplay();
+}
+
+document.getElementById('gate-email').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+// ── HISTORY — per email, key unik ──────────────────────────────────
+function loadMyHistory() {
+  if (!currentEmail) return [];
+  try { const r = localStorage.getItem(histKey(currentEmail)); return r ? JSON.parse(r) : []; }
+  catch { return []; }
+}
+function saveMyHistory(sessions) {
+  if (!currentEmail) return;
+  try { localStorage.setItem(histKey(currentEmail), JSON.stringify(sessions)); } catch {}
+}
+function addSession(session) {
+  const h = loadMyHistory();
+  h.push(session);
+  saveMyHistory(h);
+}
+
+function showHistory() {
+  const card = document.getElementById('rp-history-card');
+  const list = document.getElementById('rp-history-list');
+  const sessions = loadMyHistory().slice().reverse();
+  if (!sessions.length) {
+    list.innerHTML = '<p class="hist-empty">Belum ada sesi roleplay yang tercatat. Mulai simulasi dulu ya!</p>';
+  } else {
+    list.innerHTML = sessions.map(s => {
+      const dt = new Date(s.timestamp).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
+      const badge = s.isCustom ? '<span class="hist-custom-badge">custom</span> ' : '';
+      const msgs = s.msgs.map(m =>
+        `<div class="hist-mini-msg ${m.role==='assistant'?'ai':'user'}">
+          <div class="msg-label">${m.role==='assistant'?'Member':'CS Agent (Lo)'}</div>
+          ${escapeHtml(m.content)}
+        </div>`
+      ).join('');
+      const fbHtml = s.feedback
+        ? `<div style="margin-top:10px"><div style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px">Feedback AI</div><div class="hist-feedback-box">${escapeHtml(s.feedback)}</div></div>`
+        : '';
+      return `<div class="hist-item">
+        <div class="hist-item-header" onclick="toggleHistItem(this)">
+          <div style="flex:1;min-width:0">
+            <div class="hist-item-title">${badge}${escapeHtml(s.label)}</div>
+            <div class="hist-item-meta">${dt} · ${s.msgs.length} pesan</div>
+          </div>
+          <span style="font-size:12px;color:var(--text-muted);flex-shrink:0">▾</span>
+        </div>
+        <div class="hist-item-body">
+          ${s.isCustom ? `<p style="font-size:12px;color:var(--text-muted);margin-bottom:10px">Skenario: <em>${escapeHtml(s.customDesc||'')}</em></p>` : ''}
+          <div class="hist-mini-chat">${msgs}</div>
+          ${fbHtml}
+        </div>
+      </div>`;
+    }).join('');
+  }
+  card.style.display = 'block';
+  card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function toggleHistItem(header) {
+  header.nextElementSibling.classList.toggle('open');
+}
+
+// ── API ────────────────────────────────────────────────────────────
+const GROQ_API_KEY = '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';
+
+async function callAI(prompt, maxTokens = 900) {
+  const r = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${GROQ_API_KEY}` },
+    body: JSON.stringify({ model: "llama-3.3-70b-versatile", max_tokens: maxTokens, messages: [{ role: "user", content: prompt }] })
+  });
+  if (!r.ok) throw new Error(`API error ${r.status}`);
+  const d = await r.json();
+  if (!d.choices?.length) throw new Error('Empty response');
+  return d.choices[0].message.content || "";
 }
 
 // ── ROLE PLAY ──────────────────────────────────────────────────────
 let rpHistory = [], rpScenario = '', rpSelectedScenario = '', rpMood = 'calm';
+let rpCurrentMsgs = [], rpCurrentFeedback = '', rpCurrentLabel = '', rpIsCustom = false, rpCustomDesc = '';
 
 const scenarios = {
-  withdraw_angry:       { mood: 'angry', desc: 'Member withdraw sudah 3 hari belum masuk. Uangnya 10 juta. Dia sangat marah, panik, dan menggunakan bahasa kasar serta ancaman. Dia bilang mau lapor OJK dan media sosial kalau tidak segera diselesaikan.' },
-  kyc_angry:            { mood: 'angry', desc: 'Member sudah coba KYC 4 kali tapi selalu ditolak tanpa penjelasan jelas. Dia frustrasi berat, mulai mengumpat, dan mengancam akan uninstall dan review bintang 1 di PlayStore.' },
-  app_angry:            { mood: 'angry', desc: 'Member tidak bisa login ke aplikasi selama 3 jam padahal mau cut loss posisi trading yang lagi rugi. Dia sangat panik, marah, dan menyalahkan CS atas kerugiannya.' },
-  wrong_transfer_angry: { mood: 'angry', desc: 'Member klaim salah kirim dana 5 juta ke rekening yang salah dan minta refund sekarang juga. Dia berteriak-teriak, menggunakan bahasa kasar, dan mengancam lapor polisi.' },
-  withdraw_calm:        { mood: 'calm', desc: 'Member withdraw kemarin tapi belum masuk ke rekening bank. Dia tidak panik, hanya ingin tahu estimasi kapan sampai dan apakah ada yang perlu dicek dari sisinya.' },
-  fee_calm:             { mood: 'calm', desc: 'Member baru pertama kali trading dan bingung soal fee transaksi yang dipotong. Dia ingin penjelasan yang jelas dan ramah tentang struktur biaya di platform.' },
-  kyc_calm:             { mood: 'calm', desc: 'Member KYC-nya ditolak dan mendapat notifikasi tapi tidak tahu alasannya. Dia meminta bantuan dengan sopan dan sabar untuk mengerti apa yang harus diperbaiki.' },
-  product_question:     { mood: 'calm', desc: 'Member ingin tahu perbedaan antara produk Crypto Spot dan US Stock di platform. Dia tertarik investasi tapi masih awam dan ingin memilih produk yang tepat untuk pemula.' }
+  withdraw_angry:       { mood:'angry', desc:'Member withdraw sudah 3 hari belum masuk. Uangnya 10 juta. Dia sangat marah, panik, dan menggunakan bahasa kasar serta ancaman. Dia bilang mau lapor OJK dan media sosial kalau tidak segera diselesaikan.' },
+  kyc_angry:            { mood:'angry', desc:'Member sudah coba KYC 4 kali tapi selalu ditolak tanpa penjelasan jelas. Dia frustrasi berat, mulai mengumpat, dan mengancam akan uninstall dan review bintang 1 di PlayStore.' },
+  app_angry:            { mood:'angry', desc:'Member tidak bisa login ke aplikasi selama 3 jam padahal mau cut loss posisi trading yang lagi rugi. Dia sangat panik, marah, dan menyalahkan CS atas kerugiannya.' },
+  wrong_transfer_angry: { mood:'angry', desc:'Member klaim salah kirim dana 5 juta ke rekening yang salah dan minta refund sekarang juga. Dia berteriak-teriak, menggunakan bahasa kasar, dan mengancam lapor polisi.' },
+  withdraw_calm:        { mood:'calm',  desc:'Member withdraw kemarin tapi belum masuk ke rekening bank. Dia tidak panik, hanya ingin tahu estimasi kapan sampai dan apakah ada yang perlu dicek dari sisinya.' },
+  fee_calm:             { mood:'calm',  desc:'Member baru pertama kali trading dan bingung soal fee transaksi yang dipotong. Dia ingin penjelasan yang jelas dan ramah tentang struktur biaya di platform.' },
+  kyc_calm:             { mood:'calm',  desc:'Member KYC-nya ditolak dan mendapat notifikasi tapi tidak tahu alasannya. Dia meminta bantuan dengan sopan dan sabar untuk mengerti apa yang harus diperbaiki.' },
+  product_question:     { mood:'calm',  desc:'Member ingin tahu perbedaan antara produk Crypto Spot dan US Stock di platform. Dia tertarik investasi tapi masih awam dan ingin memilih produk yang tepat untuk pemula.' }
 };
 
 function selectScenario(btn) {
@@ -830,50 +565,35 @@ document.getElementById('rp-custom').addEventListener('input', function() {
 async function startRoleplay() {
   setLoading('rp-start-btn', true);
   hideErr('rp-err');
-
   const custom = document.getElementById('rp-custom').value.trim();
   let desc, mood;
-
   if (rpSelectedScenario === 'custom') {
-    desc = custom; mood = 'calm';
+    desc = custom; mood = 'calm'; rpIsCustom = true; rpCustomDesc = custom;
+    rpCurrentLabel = 'Custom: ' + custom.substring(0, 50) + (custom.length > 50 ? '…' : '');
   } else {
-    const s = scenarios[rpSelectedScenario];
-    desc = s.desc; mood = s.mood;
+    const s = scenarios[rpSelectedScenario]; desc = s.desc; mood = s.mood;
+    rpIsCustom = false; rpCustomDesc = '';
+    rpCurrentLabel = document.querySelector(`[data-scenario="${rpSelectedScenario}"] .scenario-text`)?.textContent || rpSelectedScenario;
   }
-
-  rpScenario = desc;
-  rpMood = mood;
-  rpHistory = [];
-
+  rpScenario = desc; rpMood = mood; rpHistory = []; rpCurrentMsgs = []; rpCurrentFeedback = '';
   const moodInstr = mood === 'angry'
     ? 'Kamu sedang sangat marah dan frustrasi. Gunakan bahasa sehari-hari Indonesia yang kasar dan emosional seperti yang nyata diucapkan orang marah. Jangan terlalu sopan.'
     : 'Kamu santai dan sopan, meskipun ada masalah. Gunakan bahasa Indonesia sehari-hari yang wajar.';
-
   try {
     const opening = await callAI(
-      `Kamu berperan sebagai MEMBER platform crypto/investasi Indonesia (Reku) yang menghubungi CS chat.\n`+
-      `Skenario: ${desc}\n`+
-      `${moodInstr}\n\n`+
-      `Tulis pesan pertama member ke CS (1-3 kalimat, natural). Langsung ke isi pesan, tanpa tanda kutip atau label.`
+      `Kamu berperan sebagai MEMBER platform crypto/investasi Indonesia (Reku) yang menghubungi CS chat.\nSkenario: ${desc}\n${moodInstr}\n\nTulis pesan pertama member ke CS (1-3 kalimat, natural). Langsung ke isi pesan, tanpa tanda kutip atau label.`
     );
-
     rpHistory.push({ role: 'assistant', content: opening });
+    rpCurrentMsgs.push({ role: 'assistant', content: opening });
     document.getElementById('rp-chat-box').innerHTML = '';
     addChatMsg('rp-chat-box', 'ai', 'Member', opening);
-
-    const rawLabel = rpSelectedScenario === 'custom'
-      ? custom
-      : document.querySelector(`[data-scenario="${rpSelectedScenario}"] .scenario-text`)?.textContent || rpSelectedScenario;
-    document.getElementById('rp-scenario-label').textContent =
-      'Skenario: ' + rawLabel.substring(0, 60) + (rawLabel.length > 60 ? '…' : '');
-
+    document.getElementById('rp-scenario-label').textContent = 'Skenario: ' + rpCurrentLabel.substring(0, 60) + (rpCurrentLabel.length > 60 ? '…' : '');
     document.getElementById('rp-setup-card').style.display = 'none';
     document.getElementById('rp-chat-area').style.display = 'block';
     document.getElementById('rp-feedback-card').style.display = 'none';
+    document.getElementById('rp-history-card').style.display = 'none';
     document.getElementById('rp-chat-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  } catch(e) {
-    showErr('rp-err', 'Gagal memulai simulasi: ' + e.message);
-  }
+  } catch(e) { showErr('rp-err', 'Gagal memulai simulasi: ' + e.message); }
   setLoading('rp-start-btn', false);
 }
 
@@ -881,34 +601,25 @@ async function sendRPMsg() {
   const input = document.getElementById('rp-input');
   const msg = input.value.trim();
   if (!msg || document.getElementById('rp-send-btn').disabled) return;
-
   input.value = '';
   document.getElementById('rp-send-btn').disabled = true;
   addChatMsg('rp-chat-box', 'user rp-user', 'CS Agent (Lo)', msg);
   rpHistory.push({ role: 'user', content: msg });
-
-  const typing = document.getElementById('rp-typing');
-  typing.style.display = 'flex';
-
+  rpCurrentMsgs.push({ role: 'user', content: msg });
+  document.getElementById('rp-typing').style.display = 'flex';
   const moodInstr = rpMood === 'angry'
-    ? 'Kamu masih marah dan emosional. Reaksi realistis — kalau jawaban kurang memuaskan, tetap kasar. Kalau ada solusi nyata, sedikit mereda tapi masih tegang.'
+    ? 'Kamu masih marah dan emosional. Kalau jawaban kurang memuaskan tetap kasar. Kalau ada solusi nyata, sedikit mereda tapi masih tegang.'
     : 'Kamu sopan dan sabar. Respon secara natural sesuai jawaban CS.';
-
   try {
-    const histText = rpHistory.map(h => (h.role==='assistant'?'Member':'CS')+': '+h.content).join('\n');
+    const histText = rpHistory.map(h => (h.role==='assistant'?'Member':'CS') + ': ' + h.content).join('\n');
     const reply = await callAI(
-      `Kamu member platform Reku (crypto/investasi Indonesia) yang chat dengan CS.\n`+
-      `Skenario awal: ${rpScenario}\n${moodInstr}\n\n`+
-      `Riwayat:\n${histText}\n\n`+
-      `Balas sebagai member (1-3 kalimat). Langsung tulis balasannya, tanpa label.`
+      `Kamu member platform Reku (crypto/investasi Indonesia) yang chat dengan CS.\nSkenario awal: ${rpScenario}\n${moodInstr}\n\nRiwayat:\n${histText}\n\nBalas sebagai member (1-3 kalimat). Langsung tulis balasannya, tanpa label.`
     );
     rpHistory.push({ role: 'assistant', content: reply });
+    rpCurrentMsgs.push({ role: 'assistant', content: reply });
     addChatMsg('rp-chat-box', 'ai', 'Member', reply);
-  } catch(e) {
-    addChatMsg('rp-chat-box', 'ai', 'System', '⚠ Gagal mendapat balasan. Coba kirim ulang.');
-  }
-
-  typing.style.display = 'none';
+  } catch(e) { addChatMsg('rp-chat-box', 'ai', 'System', '⚠ Gagal mendapat balasan. Coba kirim ulang.'); }
+  document.getElementById('rp-typing').style.display = 'none';
   document.getElementById('rp-send-btn').disabled = false;
   document.getElementById('rp-input').focus();
 }
@@ -918,28 +629,28 @@ async function getRPFeedback() {
   fb.style.display = 'block';
   document.getElementById('rp-feedback-text').textContent = '⏳ Menganalisis performa lo...';
   fb.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
   try {
-    const conv = rpHistory.map(h => (h.role==='assistant'?'Member':'CS Agent')+': '+h.content).join('\n');
+    const conv = rpHistory.map(h => (h.role==='assistant'?'Member':'CS Agent') + ': ' + h.content).join('\n');
     const feedback = await callAI(
-      `Kamu evaluator senior CS platform crypto/investasi Indonesia.\n`+
-      `Evaluasi performa CS agent dalam simulasi roleplay berikut:\n\n`+
-      `Skenario: ${rpScenario}\n\nPercakapan:\n${conv}\n\n`+
-      `Berikan evaluasi mencakup:\n`+
-      `1. ✅ Yang sudah dilakukan dengan baik\n`+
-      `2. ⚠ Yang perlu diperbaiki\n`+
-      `3. 💡 Saran konkret & contoh kalimat yang lebih baik\n`+
-      `4. 🏆 Skor keseluruhan: X/10\n\n`+
-      `Gunakan bahasa Indonesia yang konstruktif dan spesifik.`, 700
+      `Kamu evaluator senior CS platform crypto/investasi Indonesia.\nEvaluasi performa CS agent dalam simulasi roleplay berikut:\n\nSkenario: ${rpScenario}\n\nPercakapan:\n${conv}\n\nBerikan evaluasi mencakup:\n1. ✅ Yang sudah dilakukan dengan baik\n2. ⚠ Yang perlu diperbaiki\n3. 💡 Saran konkret & contoh kalimat yang lebih baik\n4. 🏆 Skor keseluruhan: X/10\n\nGunakan bahasa Indonesia yang konstruktif dan spesifik.`, 700
     );
     document.getElementById('rp-feedback-text').textContent = feedback;
-  } catch(e) {
-    document.getElementById('rp-feedback-text').textContent = '⚠ Gagal menganalisis. Coba lagi.';
-  }
+    rpCurrentFeedback = feedback;
+    // Simpan ke history akun ini saja
+    addSession({
+      timestamp: new Date().toISOString(),
+      label: rpCurrentLabel,
+      isCustom: rpIsCustom,
+      customDesc: rpCustomDesc,
+      msgs: [...rpCurrentMsgs],
+      feedback: feedback
+    });
+  } catch(e) { document.getElementById('rp-feedback-text').textContent = '⚠ Gagal menganalisis. Coba lagi.'; }
 }
 
 function resetRoleplay() {
   rpHistory = []; rpScenario = ''; rpSelectedScenario = ''; rpMood = 'calm';
+  rpCurrentMsgs = []; rpCurrentFeedback = ''; rpCurrentLabel = ''; rpIsCustom = false; rpCustomDesc = '';
   document.getElementById('rp-chat-area').style.display = 'none';
   document.getElementById('rp-feedback-card').style.display = 'none';
   document.getElementById('rp-setup-card').style.display = 'block';
@@ -952,21 +663,11 @@ function resetRoleplay() {
 
 // ── SOP CHATBOT ────────────────────────────────────────────────────
 let sopContext = '', sopHistory = [];
-
 function initSOP() {
   sopContext = document.getElementById('sop-context').value.trim();
-  addChatMsg('sop-chat-box', 'ai', 'SOP AI',
-    sopContext
-      ? 'Oke, konteks SOP sudah di-set! Tanya apa aja soal prosedur. 🎯'
-      : 'Siap! Gue akan jawab berdasarkan best practice CS crypto/investasi Indonesia. Tanya aja 👋'
-  );
+  addChatMsg('sop-chat-box', 'ai', 'SOP AI', sopContext ? 'Oke, konteks SOP sudah di-set! Tanya apa aja soal prosedur. 🎯' : 'Siap! Gue akan jawab berdasarkan best practice CS crypto/investasi Indonesia. Tanya aja 👋');
 }
-
-function sopQuickAsk(btn) {
-  document.getElementById('sop-input').value = btn.textContent;
-  sendSOPMsg();
-}
-
+function sopQuickAsk(btn) { document.getElementById('sop-input').value = btn.textContent; sendSOPMsg(); }
 async function sendSOPMsg() {
   const input = document.getElementById('sop-input');
   const msg = input.value.trim();
@@ -975,64 +676,36 @@ async function sendSOPMsg() {
   document.getElementById('sop-send-btn').disabled = true;
   addChatMsg('sop-chat-box', 'user sop-user', 'CS Agent', msg);
   sopHistory.push({ role: 'user', content: msg });
-
   try {
     const ctx = sopContext ? `Konteks SOP:\n${sopContext}\n\n` : '';
-    const hist = sopHistory.slice(-6).map(h => (h.role==='user'?'CS Agent':'SOP AI')+': '+h.content).join('\n');
-    const reply = await callAI(
-      `Kamu SOP AI Assistant untuk CS agent platform crypto/investasi Indonesia (Reku).\n${ctx}`+
-      `Riwayat:\n${hist}\n\n`+
-      `Jawab pertanyaan CS agent dengan jelas, akurat, dan praktis. Jika tidak ada di konteks SOP, jawab berdasarkan best practice CS umum. Gunakan bahasa Indonesia. Maksimal 150 kata.`, 400
-    );
+    const hist = sopHistory.slice(-6).map(h => (h.role==='user'?'CS Agent':'SOP AI') + ': ' + h.content).join('\n');
+    const reply = await callAI(`Kamu SOP AI Assistant untuk CS agent platform crypto/investasi Indonesia (Reku).\n${ctx}Riwayat:\n${hist}\n\nJawab dengan jelas, akurat, dan praktis. Gunakan bahasa Indonesia. Maksimal 150 kata.`, 400);
     sopHistory.push({ role: 'assistant', content: reply });
     addChatMsg('sop-chat-box', 'ai', 'SOP AI', reply);
-  } catch(e) {
-    addChatMsg('sop-chat-box', 'ai', 'SOP AI', 'Maaf, terjadi error. Coba tanya lagi ya.');
-  }
+  } catch(e) { addChatMsg('sop-chat-box', 'ai', 'SOP AI', 'Maaf, terjadi error. Coba tanya lagi ya.'); }
   document.getElementById('sop-send-btn').disabled = false;
 }
 
 // ── ONBOARDING ─────────────────────────────────────────────────────
 let obContext = '', obHistory = [];
-
 async function startOnboarding() {
   const name = document.getElementById('ob-name').value.trim() || 'Agent Baru';
   const day = document.getElementById('ob-day').value;
   const focus = document.getElementById('ob-focus').value;
-  setLoading('ob-start-btn', true);
-  hideErr('ob-err');
-
+  setLoading('ob-start-btn', true); hideErr('ob-err');
   try {
-    const raw = await callAI(
-      `Buat materi onboarding hari ke-${day} untuk CS agent baru bernama ${name} di platform crypto/investasi Indonesia (Reku). Fokus: ${focus}.\n\n`+
-      `Jawab HANYA JSON (tanpa backtick):\n`+
-      `{"session_title":"<judul sesi>","steps":[{"num":<n>,"title":"<judul langkah>","body":"<penjelasan 2-4 kalimat>"}]}\n\n`+
-      `Buat 4-5 langkah yang praktis dan spesifik untuk CS agent.`, 900
-    );
+    const raw = await callAI(`Buat materi onboarding hari ke-${day} untuk CS agent baru bernama ${name} di platform crypto/investasi Indonesia (Reku). Fokus: ${focus}.\n\nJawab HANYA JSON (tanpa backtick):\n{"session_title":"<judul sesi>","steps":[{"num":<n>,"title":"<judul langkah>","body":"<penjelasan 2-4 kalimat>"}]}\n\nBuat 4-5 langkah yang praktis dan spesifik untuk CS agent.`, 900);
     const data = JSON.parse(raw.replace(/```json|```/g,'').trim());
     obContext = `Materi onboarding hari ke-${day} untuk ${name}, fokus ${focus}: ${JSON.stringify(data)}`;
     obHistory = [];
-
     document.getElementById('ob-session-label').textContent = data.session_title;
-    document.getElementById('ob-steps').innerHTML = data.steps.map(s => `
-      <div class="ob-step">
-        <div class="ob-step-num">${String(s.num).padStart(2,'0')}</div>
-        <div>
-          <div class="ob-step-title">${escapeHtml(s.title)}</div>
-          <div class="ob-step-body">${escapeHtml(s.body)}</div>
-        </div>
-      </div>`).join('');
-
+    document.getElementById('ob-steps').innerHTML = data.steps.map(s => `<div class="ob-step"><div class="ob-step-num">${String(s.num).padStart(2,'0')}</div><div><div class="ob-step-title">${escapeHtml(s.title)}</div><div class="ob-step-body">${escapeHtml(s.body)}</div></div></div>`).join('');
     document.getElementById('ob-setup-card').style.display = 'none';
-    const os = document.getElementById('ob-session');
-    os.style.display = 'block';
+    const os = document.getElementById('ob-session'); os.style.display = 'block';
     os.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  } catch(e) {
-    showErr('ob-err', 'Gagal memuat materi. Coba lagi.');
-  }
+  } catch(e) { showErr('ob-err', 'Gagal memuat materi. Coba lagi.'); }
   setLoading('ob-start-btn', false);
 }
-
 async function sendOBMsg() {
   const input = document.getElementById('ob-input');
   const msg = input.value.trim();
@@ -1041,22 +714,14 @@ async function sendOBMsg() {
   document.getElementById('ob-send-btn').disabled = true;
   addChatMsg('ob-chat-box', 'user ob-user', 'Agent Baru', msg);
   obHistory.push({ role: 'user', content: msg });
-
   try {
-    const hist = obHistory.slice(-6).map(h => (h.role==='user'?'Agent':'AI')+': '+h.content).join('\n');
-    const reply = await callAI(
-      `Kamu Onboarding Buddy untuk CS agent baru di platform crypto/investasi Indonesia.\n`+
-      `Konteks materi: ${obContext}\nRiwayat: ${hist}\n\n`+
-      `Jawab pertanyaan agent baru dengan ramah, sabar, dan mudah dipahami. Gunakan analogi jika perlu. Bahasa Indonesia santai. Maks 120 kata.`, 350
-    );
+    const hist = obHistory.slice(-6).map(h => (h.role==='user'?'Agent':'AI') + ': ' + h.content).join('\n');
+    const reply = await callAI(`Kamu Onboarding Buddy untuk CS agent baru di platform crypto/investasi Indonesia.\nKonteks materi: ${obContext}\nRiwayat: ${hist}\n\nJawab dengan ramah, sabar, dan mudah dipahami. Bahasa Indonesia santai. Maks 120 kata.`, 350);
     obHistory.push({ role: 'assistant', content: reply });
     addChatMsg('ob-chat-box', 'ai', 'Onboarding AI', reply);
-  } catch(e) {
-    addChatMsg('ob-chat-box', 'ai', 'Onboarding AI', 'Maaf ada error. Coba tanya lagi ya 🙏');
-  }
+  } catch(e) { addChatMsg('ob-chat-box', 'ai', 'Onboarding AI', 'Maaf ada error. Coba tanya lagi ya 🙏'); }
   document.getElementById('ob-send-btn').disabled = false;
 }
-
 function resetOnboarding() {
   obHistory = []; obContext = '';
   document.getElementById('ob-session').style.display = 'none';
@@ -1075,9 +740,5 @@ function addChatMsg(boxId, typeClass, label, text) {
   box.scrollTop = box.scrollHeight;
 }
 </script>
-
-
-
-
 </body>
 </html>
